@@ -83,3 +83,15 @@ The maximum number of timesteps per episode (`self._max_timesteps`) is set to 10
 The `Hw2Env` environment is defined in the homework2.py file. It provides the necessary methods for the agent to interact with the environment, including `reset` and `step`.
 
 ### Results
+The model is trained for 2000 episodes and cumulative rewards and rewards per step (RPS) is plotted below:
+
+![Cumulative Rewards and RPS](rewards_plot_0-2000.png)
+
+The model trained for 2000 episodes are saved to `target_net_0-2000.pth` and `policy_net_0-2000.pth` files.
+
+### Conclusion
+The model is trained with the suggested hyperparameters. At the time, 2000 episodes, the model does not seem to converge.
+
+Previously, I have experiemented the environment with `state()` before changing it to `high_level_state()`, But it did not converge as well with suggested model and parameters. Next, I have tried to train the model with a larger NN and it was performing similar to current network but episodes were taking longer.
+
+I am going to update this section if I can achieve to reach 10000 episodes without my computer crash, which it did several times in my pervious experiments.
