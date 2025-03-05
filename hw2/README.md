@@ -83,15 +83,51 @@ The maximum number of timesteps per episode (`self._max_timesteps`) is set to 10
 The `Hw2Env` environment is defined in the homework2.py file. It provides the necessary methods for the agent to interact with the environment, including `reset` and `step`.
 
 ### Results
+
+#### hw_conv.py
+First, I have experiemented the environment with `state()` before changing it to `high_level_state()`, but it did not converge with suggested model and parameters in about 5.6k episodes which took 2 days for me to run. So I decided to change teh state as mentioned before more experiements on the convolution case. Unfortunately, I had only save the text outputs between 4.6k to 5.6k episodes.
+
+Please make sure to change the environment with `state()` before running hw_conv.py.
+
+![Cumulative Rewards and RPS of Convolution Case](rewards_and_rps_conv_4658-5638.png)
+
+#### hw_2_1.py
+The model is trained with the suggested hyperparameters. At the time of 2000 episodes, the model does not seem to converge.
+
 The model is trained for 2000 episodes and cumulative rewards and rewards per step (RPS) is plotted below:
 
 ![Cumulative Rewards and RPS](rewards_plot_0-2000.png)
 
 The model trained for 2000 episodes are saved to `target_net_0-2000.pth` and `policy_net_0-2000.pth` files.
 
+!UPDATE!
+I achieved to reach 5..6k episodes with extended deadline. The model is saved to `target_net_0-5600.pth` and `policy_net_0-5600.pth` files You can see the results below:
+
+![Cumulative Rewards and RPS](rewards_and_rps_0-5600.png)
+
+#### hw_2_2.py
+The model is trained with the adjusted hyperparameters.
+
+- `N_ACTIONS = 8`
+- `GAMMA = 0.99`
+- `EPSILON = 1.0`
+- `EPSILON_DECAY = 0.995`
+- `EPSILON_DECAY_ITER = 100`
+- `MIN_EPSILON = 0.05`
+- `LEARNING_RATE = 0.005`
+- `BATCH_SIZE = 32`
+- `UPDATE_FREQ = 10`
+- `TARGET_NETWORK_UPDATE_FREQ = 100`
+- `BUFFER_LENGTH = 10000`
+- `NUM_OF_EPISODES = 5000`
+
+I have adjusted rewards calculation with `reward = new reward - old reward` and increased the weight of negative rewards by 2 in order to achieve better training results.
+
+Additionally, I have used an expanded NN of 6x64x64x32x8.
+
+I could only reach to 1000 episodes with this configuration which took about 9 hours.  The model is saved to `target_net_2_0-1000.pth` and `policy_net_2_0-1000.pth` files You can see the results below
+
+![Cumulative Rewards and RPS](rewards_and_rps_2_0-1000.png)
+
 ### Conclusion
-The model is trained with the suggested hyperparameters. At the time, 2000 episodes, the model does not seem to converge.
-
-Previously, I have experiemented the environment with `state()` before changing it to `high_level_state()`, But it did not converge as well with suggested model and parameters. Next, I have tried to train the model with a larger NN and it was performing similar to current network but episodes were taking longer.
-
-I am going to update this section if I can achieve to reach 10000 episodes without my computer crash, which it did several times in my pervious experiments.
+As the trainings took too much time in my case, I could not be able to complete a training phase with 10000 episodes in neither of the cases. The latest solution, `hw2_2.py` seems promising to me but 1000 episodes is too small to forecast the results.
