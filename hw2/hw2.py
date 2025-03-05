@@ -24,8 +24,8 @@ BUFFER_LENGTH = 100000
 NUM_OF_EPISODES = 10000
 
 device = torch.device(
-    "cuda" if torch.cuda.is_available() else
-    "mps" if torch.backends.mps.is_available() else
+    #"cuda" if torch.cuda.is_available() else
+    #"mps" if torch.backends.mps.is_available() else
     "cpu"
 )
 
@@ -78,6 +78,8 @@ def optimize_model(policy_net, target_net, memory, optimizer, batch_size, gamma)
     optimizer.step()
 
 def train():
+    global EPSILON  # Declare EPSILON as global to modify it within the function
+
     # Initialize the environment and the policy and target networks
     env = Hw2Env(n_actions=N_ACTIONS, render_mode="offscreen")
     policy_net = DQN(N_ACTIONS).to(device)
