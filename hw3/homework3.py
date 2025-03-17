@@ -150,9 +150,17 @@ if __name__ == "__main__":
     agent = Agent()
     num_episodes = 10000
 
-    rews = []
+    # Load the model and training statistics if they exist
+    try:
+        agent.model.load_state_dict(torch.load("model.pt"))
+        rews = np.load("rews.npy").tolist()
+        start_episode = len(rews)
+        print(f"Resuming training from episode {start_episode}")
+    except FileNotFoundError:
+        rews = []
+        start_episode = 0
 
-    for i in range(num_episodes):        
+    for i in range(start_episode, num_episodes):        
         env.reset()
         state = env.high_level_state()
         done = False
@@ -173,8 +181,12 @@ if __name__ == "__main__":
         rews.append(cumulative_reward)
         agent.update_model()
 
-    ## Save the model and the training statistics
+        if (i + 1) % 100 == 0:
+            torch.save(agent.model.state_dict(), f"model_{i+1}.pt")
+            np.save(f"rews_{i+1}.npy", np.array(rews))
+
+    # Save the final model and the training statistics
     torch.save(agent.model.state_dict(), "model.pt")
     np.save("rews.npy", np.array(rews))
-        
+
 
