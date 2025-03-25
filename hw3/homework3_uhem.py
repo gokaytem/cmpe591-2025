@@ -13,7 +13,7 @@ import environment
 from agent import Agent
 
 cudnn.benchmark = True  # enable cuDNN auto-tuning
-torch.set_num_threads(64)  # allow multi-threaded CPU ops
+torch.set_num_threads(os.cpu_count())  # allow multi-threaded CPU ops
 
 class Hw3Env(environment.BaseEnv):
     def __init__(self, **kwargs) -> None:
@@ -157,9 +157,12 @@ class Hw3Env(environment.BaseEnv):
 if __name__ == "__main__":
     env = Hw3Env(render_mode="offscreen")
     agent = Agent()
-    num_episodes = 1000
+    num_episodes = 101
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}, num_of_threads: {torch.get_num_threads()}")
+    with open("training_info.txt", "w") as f:
+        f.write(f"Using device: {device}, num_of_threads: {torch.get_num_threads()}\n")
 
     # Load the model and training statistics if they exist
     checkpoint_files = glob.glob("model_*.pt")
