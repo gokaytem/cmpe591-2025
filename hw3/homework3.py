@@ -4,10 +4,16 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 import torch
 import torchvision.transforms as transforms
 import numpy as np
+import glob
+import re
+import torch.backends.cudnn as cudnn
+import time
 
 import environment
 from agent import Agent
 
+cudnn.benchmark = True  # enable cuDNN auto-tuning
+torch.set_num_threads(8)  # allow multi-threaded CPU ops
 
 class Hw3Env(environment.BaseEnv):
     def __init__(self, **kwargs) -> None:
@@ -153,17 +159,32 @@ if __name__ == "__main__":
     agent = Agent()
     num_episodes = 10000
 
-    # Load the model and training statistics if they exist
-    try:
-        agent.model.load_state_dict(torch.load("model.pt"))
-        rews = np.load("rews.npy").tolist()
-        start_episode = len(rews)
-        print(f"Resuming training from episode {start_episode}")
-    except FileNotFoundError:
-        rews = []
-        start_episode = 0
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    for i in range(start_episode, num_episodes):        
+    # Load the model and training statistics if they exist
+    checkpoint_files = glob.glob("model_*.pt")
+    if checkpoint_files:
+        latest_ckpt = sorted(checkpoint_files, key=lambda x: int(re.findall(r"(\d+)", x)[-1]))[-1]
+        episode_num = int(re.findall(r"(\d+)", latest_ckpt)[-1])
+        agent.model.load_state_dict(torch.load(latest_ckpt, map_location=device))
+        try:
+            rews = np.load(f"rews_{episode_num}.npy").tolist()
+        except FileNotFoundError:
+            rews = []
+        start_episode = episode_num
+        print(f"Resuming from {latest_ckpt}, episode {start_episode}")
+    else:
+        try:
+            agent.model.load_state_dict(torch.load("model.pt", map_location=device))
+            rews = np.load("rews.npy").tolist()
+            start_episode = len(rews)
+            print(f"Resuming training from episode {start_episode}")
+        except FileNotFoundError:
+            rews = []
+            start_episode = 0
+
+    for i in range(start_episode, num_episodes):
+        start_time = time.time()
         env.reset()
         state = env.high_level_state()
         done = False
@@ -180,7 +201,9 @@ if __name__ == "__main__":
             state = next_state
             episode_steps += 1
 
-        print(f"Episode={i}, reward={cumulative_reward}")
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        print(f"Episode={i}, reward={cumulative_reward}, time={elapsed_time:.2f}s")
         rews.append(cumulative_reward)
         agent.update_model()
 
