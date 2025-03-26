@@ -1,5 +1,7 @@
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+os.environ["MUJOCO_GL"] = "egl"
+os.environ["PYOPENGL_PLATFORM"] = "egl"
 
 import torch
 import torchvision.transforms as transforms
@@ -10,7 +12,7 @@ import torch.backends.cudnn as cudnn
 import time
 
 import environment
-from agent import Agent
+from agent2 import Agent
 
 cudnn.benchmark = True  # enable cuDNN auto-tuning
 torch.set_num_threads(os.cpu_count())  # allow multi-threaded CPU ops
@@ -157,7 +159,7 @@ class Hw3Env(environment.BaseEnv):
 if __name__ == "__main__":
     env = Hw3Env(render_mode="offscreen")
     agent = Agent()
-    num_episodes = 101
+    num_episodes = 10000
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}, num_of_threads: {torch.get_num_threads()}")
@@ -165,21 +167,21 @@ if __name__ == "__main__":
         f.write(f"Using device: {device}, num_of_threads: {torch.get_num_threads()}\n")
 
     # Load the model and training statistics if they exist
-    checkpoint_files = glob.glob("model_*.pt")
+    checkpoint_files = glob.glob("model_uhem_*.pt")
     if checkpoint_files:
         latest_ckpt = sorted(checkpoint_files, key=lambda x: int(re.findall(r"(\d+)", x)[-1]))[-1]
         episode_num = int(re.findall(r"(\d+)", latest_ckpt)[-1])
         agent.model.load_state_dict(torch.load(latest_ckpt, map_location=device))
         try:
-            rews = np.load(f"rews_{episode_num}.npy").tolist()
+            rews = np.load(f"rews_uhem_{episode_num}.npy").tolist()
         except FileNotFoundError:
             rews = []
         start_episode = episode_num
         print(f"Resuming from {latest_ckpt}, episode {start_episode}")
     else:
         try:
-            agent.model.load_state_dict(torch.load("model.pt", map_location=device))
-            rews = np.load("rews.npy").tolist()
+            agent.model.load_state_dict(torch.load("model_uhem.pt", map_location=device))
+            rews = np.load("rews_uhem.npy").tolist()
             start_episode = len(rews)
             print(f"Resuming training from episode {start_episode}")
         except FileNotFoundError:
@@ -211,11 +213,11 @@ if __name__ == "__main__":
         agent.update_model()
 
         if (i + 1) % 100 == 0:
-            torch.save(agent.model.state_dict(), f"model_{i+1}.pt")
-            np.save(f"rews_{i+1}.npy", np.array(rews))
+            torch.save(agent.model.state_dict(), f"model_uhem_{i+1}.pt")
+            np.save(f"rews_uhem_{i+1}.npy", np.array(rews))
 
     # Save the final model and the training statistics
-    torch.save(agent.model.state_dict(), "model.pt")
-    np.save("rews.npy", np.array(rews))
+    torch.save(agent.model.state_dict(), "model_uhem.pt")
+    np.save("rews_uhem.npy", np.array(rews))
 
 
