@@ -77,59 +77,60 @@ python homework3_uhem.py
 Four different agents are trained simultanously on UHEM:
 - `hw3_soc_01-4.sh` (Slurm job)
 
-!!!This part will be updated once the training jobs are completed.
+!!!IMPORTANT NOTE!!!
+I cannot access UHEM with "authentication failed" error at the time I submit the homework and I do not have time to resolve the issue before the deadline. Thus, I cannot get the complete results of the training but I have shared below the training tasks up to 4000 episodes which I saved to my local before.
 
 ##### Training 1
 Related files:
 - `homework3_soc_uhem_01.py` (Tested on UHEM)
 - `agent_soc_uhem_01.py`
-- `model_soc_uhem_01_10000.pt` (Trained model)
-- `rews_soc_uhem_01_10000.py` (Reward logs)
+- `model_soc_uhem_01_4000.pt` (Trained model)
+- `rews_soc_uhem_01_4000.py` (Reward logs)
 
 To start the training, run the following command:
 ```bash
 python homework3_soc_uhem_01.py
 ```
-![Soft Acor Critic Implementation - 1 RPS for 10000 Episodes](rews_soc_uhem_01_10000_smoothBy100.png)
+![Soft Acor Critic Implementation - 1 RPS for 10000 Episodes](rews_soc_uhem_01_4000_smoothBy100.png)
 
 
 ##### Training 2
 Related files:
 - `homework3_soc_uhem_02.py` (Tested on UHEM)
 - `agent_soc_uhem_02.py`
-- `model_soc_uhem_02_10000.pt` (Trained model)
-- `rews_soc_uhem_02_10000.py` (Reward logs)
+- `model_soc_uhem_02_4000.pt` (Trained model)
+- `rews_soc_uhem_02_4000.py` (Reward logs)
 
 To start the training, run the following command:
 ```bash
 python homework3_soc_uhem_02.py
 ```
-![Soft Acor Critic Implementation - 2 RPS for 10000 Episodes](rews_soc_uhem_02_10000_smoothBy100.png)
+![Soft Acor Critic Implementation - 2 RPS for 4000 Episodes](rews_soc_uhem_02_4000_smoothBy100.png)
 
 
 ##### Training 3
 Related files:
 - `homework3_soc_uhem_03.py` (Tested on UHEM)
 - `agent_soc_uhem_03.py`
-- `model_soc_uhem_03_10000.pt` (Trained model)
-- `rews_soc_uhem_03_10000.py` (Reward logs)
+- `model_soc_uhem_03_4000.pt` (Trained model)
+- `rews_soc_uhem_03_4000.py` (Reward logs)
 
 To start the training, run the following command:
 ```bash
 python homework3_soc_uhem_03.py
 ```
-![Soft Acor Critic Implementation - 3 RPS for 10000 Episodes](rews_soc_uhem_03_10000_smoothBy100.png)
+![Soft Acor Critic Implementation - 3 RPS for 10000 Episodes](rews_soc_uhem_03_4000_smoothBy100.png)
 
 
 ##### Training 4
 Related files:
 - `homework3_soc_uhem_04.py` (Tested on UHEM)
 - `agent_soc_uhem_04.py`
-- `model_soc_uhem_04_10000.pt` (Trained model)
-- `rews_soc_uhem_04_10000.py` (Reward logs)
+- `model_soc_uhem_04_4000.pt` (Trained model)
+- `rews_soc_uhem_04_4000.py` (Reward logs)
 
 To start the training, run the following command:
 ```bash
 python homework3_soc_uhem_04.py
 ```
-![Soft Acor Critic Implementation - 4 RPS for 10000 Episodes](rews_soc_uhem_04_10000_smoothBy100.png)
+![Soft Acor Critic Implementation - 4 RPS for 4000 Episodes](rews_soc_uhem_04_4000_smoothBy100.png)
