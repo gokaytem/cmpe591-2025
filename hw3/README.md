@@ -80,6 +80,9 @@ Four different agents are trained simultanously on UHEM:
 !!!IMPORTANT NOTE!!!
 I cannot access UHEM with "authentication failed" error at the time I submit the homework and I do not have time to resolve the issue before the deadline. Thus, I cannot get the complete results of the training but I have shared below the training tasks up to 4000 episodes which I saved to my local before.
 
+!!!UPDATE!!!
+I was able to run them again for 10000 episodes each but no learning is achieved, thus the output below is not updated.
+
 ##### Training 1
 Related files:
 - `homework3_soc_uhem_01.py` (Tested on UHEM)
