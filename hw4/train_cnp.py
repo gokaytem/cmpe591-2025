@@ -64,7 +64,7 @@ if __name__ == "__main__":
     model = CNP(in_shape=(2, 4), hidden_size=256, num_hidden_layers=4, min_std=1e-3).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     batch_size = 32
-    n_epochs = 30000
+    n_epochs = 100000
     train_losses = []
     test_losses = []
     log_epochs = []
